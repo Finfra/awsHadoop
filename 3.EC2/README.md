@@ -1,11 +1,13 @@
 # 3. EC2 (Elastic Compute Cloud)
 ## 3.1: 수동으로 EC2 인스턴스 생성
 * https://ap-northeast-2.console.aws.amazon.com/ec2/home?region=ap-northeast-2#LaunchInstances:
-* Region        : ap-northeast-2(서울) 인지 확인할 것.
+* Region        : ap-northeast-2(서울) 인지 확인만.
+* Name          : u1
 * AMI           : ami-0d5bb3742db8fc264 (Ubuntu Server 24.04 LTS)
+* Ssecurity groups : Create security group ( Allow security group)
 * Instance Type : t2-micro
-* Key Pair      : key1 (생성)
-* Storage(EBS)  : 100M
+* Key Pair      : key1 생성, pem확장자로 다운로드
+* Storage(EBS)  : 8G
 
 ## 3.2: EC2 보안 그룹 설정 및 연결
 * https://ap-northeast-2.console.aws.amazon.com/ec2/home?region=ap-northeast-2#SecurityGroups: 에서 보안 그룹 추가

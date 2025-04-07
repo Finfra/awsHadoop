@@ -12,4 +12,4 @@
 terraform state 
 ls 명령으로 terraform.tfstate 생성 확인 
 ```
-#
+

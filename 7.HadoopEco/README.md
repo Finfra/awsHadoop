@@ -45,3 +45,5 @@ ansible-playbook --flush-cache -i /df/ansible-hadoop/hosts /df/ansible-hadoop/ha
 wget https://dlcdn.apache.org/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3.tgz -o ~/hadoopInstall/df/i1/spark-3.4.4-bin-hadoop3.tgz
 ansible-playbook --flush-cache -i /df/ansible-spark/hosts /df/ansible-spark/spark_install.yml -e ansible_python_interpreter=/usr/bin/python3.12
 ```
+
+
