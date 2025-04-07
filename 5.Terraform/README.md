@@ -56,7 +56,7 @@ aws configure
     AWS Secret Access Key [None]: xxxxxxxxxxxxxxxxxxx
     Default region name [None]: ap-northeast-2
     Default output format [None]: text
-cd ~/aws/1.4.2.HostProvisioning
+cd awsHadoop/5.Terraform/
 # rm -rf ~/.ssh/known_hosts
 bash doSetHosts.sh
 ```
@@ -70,7 +70,7 @@ bash doSetHosts.sh
 
 ### 5.2.5.3: Terraform 상태 파일 관리 및 백업
 ```
-terraform state 
+terraform show 
 ls 명령으로 terraform.tfstate 생성 확인 
 ```
 
