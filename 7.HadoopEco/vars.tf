@@ -11,14 +11,12 @@ variable "PATH_TO_PUBLIC_KEY" {
   default = "~/.ssh/id_rsa.pub"
 }
 variable "INSTANCE_USERNAME" {
-  default = "ubuntu"
+  default = "ec2-user"
 }
 
 variable "AMIS" {
   default = {
-    eu-west-1      = "ami-0a422d70f727fe93e"
-    ap-northeast-2 = "ami-042e76978adeb8c48"
-    us-east-1      = "ami-005fc0f236362e99f"
+    ap-northeast-2 = "ami-0a463f27534bdf246"
   }
 } 
 

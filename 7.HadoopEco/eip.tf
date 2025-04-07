@@ -7,7 +7,7 @@ resource "aws_eip" "vm_eip" {
 }
 resource "aws_eip_association" "eip_assoc" {
   count         = var.instance_count
-  instance_id   = aws_instance.vm0[count.index].id
+  instance_id   = aws_instance.s[count.index].id
   allocation_id = aws_eip.vm_eip[count.index].id
   # count = length(local.eni_ips_list)
   # network_interface_id = aws_network_interface.my_eni.id

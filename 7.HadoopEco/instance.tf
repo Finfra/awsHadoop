@@ -6,7 +6,7 @@ resource "aws_key_pair" "prj_key" {
   }
 }
 
-resource "aws_instance" "vm0" {
+resource "aws_instance" "s" {
   count         = var.instance_count
   ami           = lookup(var.AMIS, var.AWS_REGION)
   instance_type = var.instance_type
@@ -33,6 +33,6 @@ resource "aws_instance" "vm0" {
   }
 
   tags = {
-    Name = format("vm0%d", count.index + 1)
+    Name = format("s%d", count.index + 1)
   }
 }
