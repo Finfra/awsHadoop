@@ -6,7 +6,8 @@
 ## 5. Terraform
 ## 6. EBS (Elastic Block Store)
 ## 7. 빅데이터 솔루션 프로비저닝
-## 8. RDS (시간 남으면 서비스 실습)
+## 8. RDS 
+- 시간 남으면,,,
 
 
 
