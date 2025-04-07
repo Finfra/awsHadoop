@@ -11,7 +11,7 @@
 
 * 접속 : linux에서는 아래와 같고 windows에서는 putty로 접속 단, user는 ec2-user임.(ubuntu아님에 주의)
 ```
-ssh ssh -i key1.pem ec2-user@아이피
+ssh ssh -i key1.pem ec2-user@{아이피}
 ```
 * 접속 후 기본 셋팅
 ```
@@ -24,8 +24,8 @@ exit
 ## 
 * Ansible, Terraform설치
 ```
-cd
-git clone  https://github.com/Finfra/awsHadoop
+# cd
+# git clone  https://github.com/Finfra/awsHadoop
 cd ~/awsHadoop/7.HadoopEco 
 bash installOnEc2_awsLinux.sh
 ```
@@ -70,8 +70,13 @@ aws configure
     Default output format [None]: text
 # rm -rf ~/.ssh/known_hosts
 # aws ec2 describe-instances
-bash doSetHosts.sh
+sudo ./noStrictCheck.sh
+
+sudo ./doSetHosts.sh
+
 ssh s1 hostname
+ssh s2 hostname
+ssh s3 hostname
 ```
 
 * cf) 실패시 아래와 같이 /etc/hosts파일을 직접 셋팅
@@ -84,22 +89,32 @@ ssh s1 hostname
 
 
 ## 7.5. Hadoop Cluster Install
-* https://github.com/Finfra/hadoopInstall 
-* 주의 : 하둡파일(https://downloads.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz)이 ./df/i1에 있어야 작동함.
+* 주의 : 하둡파일(https://downloads.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz)이 ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/에 있어야 작동함.
 ```
+[ ! -f ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/hadoop-3.3.6.tar.gz ] &&      \
+wget https://downloads.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz \
+-O ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/hadoop-3.3.6.tar.gz
 
-wget https://downloads.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz -O ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/hadoop-3.3.6.tar.gz
-ansible-playbook --flush-cache -i ~/hadoopInstall/df/i1/ansible-hadoop/hosts ~/hadoopInstall/df/i1/ansible-hadoop/ansible-hadoop/hadoop_install.yml
+ansible-playbook --flush-cache                                                      \
+  -u ec2-user -b --become --become-user=root                                        \
+  -i ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/ansible-hadoop/hosts               \
+     ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/ansible-hadoop/hadoop_install.yml  \
+  -e  ansible_python_interpreter=/usr/bin/python3.9
 ```
 
 ## 7.4. Spark Cluster Install
-* Spark cluster install on Red Hat Enterprise Linux version 9  docker
-* 주의1 : 하둡파일(https://dlcdn.apache.org/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3.tgz)이 ./df/i1에 있어야 작동함.
+* 주의1 : 하둡파일(https://dlcdn.apache.org/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3.tgz)이 ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/에 있어야 작동함.
 
 ```
 # docker exec -it i1  bash
-wget https://dlcdn.apache.org/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3.tgz -O ./df/i1/spark-3.4.4-bin-hadoop3.tgz
-ansible-playbook --flush-cache -i /df/ansible-spark/hosts /df/ansible-spark/spark_install.yml -e ansible_python_interpreter=/usr/bin/python3.12
+[ ! -f ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/spark-3.4.4-bin-hadoop3.tgz ] && \
+wget https://dlcdn.apache.org/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3.tgz      \
+-O ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/spark-3.4.4-bin-hadoop3.tgz
+ansible-playbook --flush-cache                                                   \
+  -u ec2-user -b --become --become-user=root                                     \
+  -i ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/ansible-hadoop/hosts            \
+     ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/ansible-spark/spark_install.yml \
+  -e  ansible_python_interpreter=/usr/bin/python3.9
 ```
 
 

@@ -1,50 +1,8 @@
-# Container Provisioning
-* docker-compose 로 i1,s1,s2,s3 컨테이너를 생성합니다. 
-```
-git clone git@github.com:Finfra/hadoopInstall.git
-cd hadoopInstall
-. do.sh
-```
-
-# 주의
-## 내부망에서 설치시 인증서 설치
-1. i1s3.dockerfile과 같은 위치에 lotte.net.crt 파일 생성
-2. i1s3.dockerfile에 아래 내용을 파일 처음에 추가
-``` 
-# 사설 인증서 복사 및 갱신
-COPY lotte.net.crt /etc/pki/ca-trust/source/anchors/lotte.net.crt
-RUN update-ca-trust enable
-RUN update-ca-trust extract
-```
-
-
-# Hadoop ClusterInstall
-* Hadoop cluster install on oraclelinux9 docker
-* 주의1 : 하둡파일(https://downloads.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz)이 /df/i1에 있어야 작동함.
-
-
-## Hadoop Install by Ansible
-```
-# docker exec -it i1  bash
-ansible-playbook --flush-cache -i /df/ansible-hadoop/hosts /df/ansible-hadoop/hadoop_install.yml
-```
-
-# Spark ClusterInstall
-* Spark cluster install on oraclelinux9 docker
-* 주의1 : 하둡파일(https://dlcdn.apache.org/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3.tgz)이 /df/i1에 있어야 작동함.
-
-## Spark Install by Ansible
-```
-# docker exec -it i1  bash
-ansible-playbook --flush-cache -i /df/ansible-spark/hosts /df/ansible-spark/spark_install.yml -e ansible_python_interpreter=/usr/bin/python3.12
-```
-
-
 # Hadoop Check
-
 ## Dfs Test
 * s1에서 실행
 ```
+sudo -i
 hadoop fs -ls /
 echo "hi" > a.txt
 hadoop fs -mkdir -p /data     # 먼저 /data 디렉토리가 없다면 생성
@@ -58,6 +16,7 @@ hadoop fs -ls /data
 ## Map/Reduce Test
 * s1에서 실행
 ```
+sudo -i
 cd /df
 mkdir -p wordcount_classes
 javac -classpath $(hadoop classpath) -d wordcount_classes WordCount.java
@@ -79,30 +38,30 @@ hdfs dfs -cat /user/hadoop/output/part-r-00000
 ```bash
 # Alias : startAll
 # HDFS 데몬 시작
-ansible namenodes -i /df/ansible-hadoop/hosts -m shell -a "nohup hdfs --daemon start namenode &" -u root
-ansible datanodes -i /df/ansible-hadoop/hosts -m shell -a "nohup hdfs --daemon start datanode &" -u root
+ansible namenodes -i    ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/ansible-hadoop/hosts -m shell -a "nohup hdfs --daemon start namenode &" -u root
+ansible datanodes -i    ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/ansible-hadoop/hosts -m shell -a "nohup hdfs --daemon start datanode &" -u root
 
 # YARN 데몬 시작
-ansible namenodes -i /df/ansible-hadoop/hosts -m shell -a "nohup yarn --daemon start resourcemanager &" -u root
-ansible datanodes -i /df/ansible-hadoop/hosts -m shell -a "nohup yarn --daemon start nodemanager &" -u root
+ansible namenodes -i    ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/ansible-hadoop/hosts -m shell -a "nohup yarn --daemon start resourcemanager &" -u root
+ansible datanodes -i    ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/ansible-hadoop/hosts -m shell -a "nohup yarn --daemon start nodemanager &" -u root
 
 # MapReduce HistoryServer 시작 (선택 사항)
-ansible namenodes -i /df/ansible-hadoop/hosts -m shell -a "nohup mapred --daemon start historyserver &" -u root
+ansible namenodes -i    ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/ansible-hadoop/hosts -m shell -a "nohup mapred --daemon start historyserver &" -u root
 ```
 
 ### Stop all node
 ```bash
 # Alias : stopAll
 # HDFS 데몬 종료
-ansible namenodes -i /df/ansible-hadoop/hosts -m shell -a "hdfs --daemon stop namenode" -u root
-ansible datanodes -i /df/ansible-hadoop/hosts -m shell -a "hdfs --daemon stop datanode" -u root
+ansible namenodes -i    ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/ansible-hadoop/hosts -m shell -a "hdfs --daemon stop namenode" -u root
+ansible datanodes -i    ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/ansible-hadoop/hosts -m shell -a "hdfs --daemon stop datanode" -u root
 
 # YARN 데몬 종료
-ansible namenodes -i /df/ansible-hadoop/hosts -m shell -a "yarn --daemon stop resourcemanager" -u root
-ansible datanodes -i /df/ansible-hadoop/hosts -m shell -a "yarn --daemon stop nodemanager" -u root
+ansible namenodes -i    ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/ansible-hadoop/hosts -m shell -a "yarn --daemon stop resourcemanager" -u root
+ansible datanodes -i    ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/ansible-hadoop/hosts -m shell -a "yarn --daemon stop nodemanager" -u root
 
 # MapReduce HistoryServer 종료 (선택 사항)
-ansible namenodes -i /df/ansible-hadoop/hosts -m shell -a "mapred --daemon stop historyserver" -u root
+ansible namenodes -i    ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/ansible-hadoop/hosts -m shell -a "mapred --daemon stop historyserver" -u root
 ```
 
 

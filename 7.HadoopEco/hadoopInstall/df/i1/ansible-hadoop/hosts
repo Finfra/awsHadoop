@@ -1,7 +1,7 @@
 [hadoop_cluster]
-s1 ansible_user=root
-s2 ansible_user=root
-s3 ansible_user=root
+s1 ansible_user=ec2-user
+s2 ansible_user=ec2-user
+s3 ansible_user=ec2-user
 
 [namenodes]
 s1
@@ -13,4 +13,4 @@ s3
 
 
 [all:vars]
-ansible_python_interpreter=/usr/bin/python3.12
+ansible_python_interpreter=/usr/bin/python3.9

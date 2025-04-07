@@ -1,65 +1,38 @@
 # 네임노드 멈춤
 - name: Stop any running NameNode daemon
-  command: hdfs --daemon stop namenode
+  command: /opt/hadoop/bin/hdfs --daemon stop namenode
   ignore_errors: yes
   when: "'namenodes' in group_names"
 
 # 데이터노드 멈춤
 - name: Stop any running DataNode daemon
-  command: hdfs --daemon stop datanode
+  command: /opt/hadoop/bin/hdfs --daemon stop datanode
   ignore_errors: yes
   when: "'datanodes' in group_names"
+  environment:
+    PATH: "/opt/hadoop/bin:/opt/hadoop/sbin:{{ ansible_env.PATH }}"
 
 - name: Format NameNode
-  shell: echo "Y" | hdfs namenode -format
+  shell: echo "Y" | /opt/hadoop/bin/hdfs namenode -format
   when: "'namenodes' in group_names"
-
 
 # 네임노드 시작
 - name: Start NameNode daemon with nohup
-  shell: nohup hdfs --daemon start namenode &
+  shell: nohup /opt/hadoop/bin/hdfs --daemon start namenode &
   register: namenode_start
   until: namenode_start.rc == 0
   retries: 5
   delay: 10
   when: "'namenodes' in group_names"
 
-# # 네임노드가 준비될 때까지 대기
-# - name: Wait for NameNode to be ready
-#   pause:
-#     seconds: 10
-#   when: "'namenodes' in group_names"
-
 # 데이터노드 시작
 - name: Start DataNode daemon with nohup
-  shell: nohup hdfs --daemon start datanode &
+  shell: nohup /opt/hadoop/bin/hdfs --daemon start datanode &
   register: datanode_start
   until: datanode_start.rc == 0
   retries: 5
   delay: 10
   when: "'datanodes' in group_names"
-
-
-# # 데이터노드가 준비될 때까지 대기
-# - name: Wait for DataNode to be ready
-#   pause:
-#     seconds: 10
-#   when: "'datanodes' in group_names"
-
-# - name: Start ResourceManager on namenodes
-#   shell: "yarn --daemon start resourcemanager"
-#   when: "'namenodes' in group_names"
-
-# - name: Start NodeManager on datanodes
-#   shell: "yarn --daemon start nodemanager"
-#   when: "'datanodes' in group_names"
-
-# - name: Start HistoryServer (for MapReduce job history)
-#   shell: "mapred --daemon start historyserver"
-#   when: "'namenodes' in group_names"
-
-
-
 
 # 데이터노드가 준비될 때까지 대기
 - name: Wait for DataNode to be ready
@@ -69,9 +42,16 @@
 
 # HDFS 루트 디렉토리 확인
 - name: Verify Hadoop setup by listing root directory
-  command: hadoop fs -ls /
+  command: /opt/hadoop/bin/hadoop fs -ls /
   register: hdfs_check
   until: hdfs_check.rc == 0
   retries: 5
   delay: 10
   when: "'namenodes' in group_names"
+
+# 로그 디렉토리 소유권 및 권한 설정
+
+- name: Set permission of Hadoop logs directory
+  file:
+    path: /opt/hadoop/logs
+    mode: '0777'
