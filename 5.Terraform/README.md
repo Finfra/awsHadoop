@@ -3,10 +3,10 @@
 ## Terraform과 Ansible 설치
 * python3.12가 설치되어 있을때는 아래 스크립트를 실행합니다.
 ```
-sudo -i
 cd
 git clone https://github.com/Finfra/awsHadoop
-sudo -i bash -c 'curl https://raw.githubusercontent.com/Finfra/awsHadoop/refs/heads/main/5.Terraform/installOnEc2_p3.12.sh | bash'
+cd awsHadoop/5.Terraform/
+sudo ./installOnEc2_p3.12.sh
 ```
 
 
@@ -42,9 +42,7 @@ ssh-keygen -f ~/.ssh/id_rsa -N ''
 
 ### 5.2.2. Terrform 으로 host 셋팅
 ```
-cd
-git clone https://github.com/Finfra/aws
-cd ~/aws/1.4.2.HostProvisioning/
+cd awsHadoop/5.Terraform/
 terraform init
 terraform apply --auto-approve
 ```
