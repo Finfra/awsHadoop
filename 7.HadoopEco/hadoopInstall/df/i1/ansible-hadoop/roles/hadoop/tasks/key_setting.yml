@@ -1,0 +1,32 @@
+- name: Generate SSH key on s1 (only if not exists)
+  shell: ssh-keygen -q -f /root/.ssh/id_rsa -N ''
+  args:
+    creates: /root/.ssh/id_rsa
+  when: inventory_hostname == 's1'
+
+- name: Read public key from s1
+  slurp:
+    src: /root/.ssh/id_rsa.pub
+  register: s1_pubkey
+  when: inventory_hostname == 's1'
+
+- name: Set fact with s1 public key
+  set_fact:
+    s1_authorized_key: "{{ s1_pubkey['content'] | b64decode }}"
+  when: inventory_hostname == 's1'
+
+- name: Share s1 public key to other nodes
+  authorized_key:
+    user: root
+    key: "{{ hostvars['s1']['s1_authorized_key'] }}"
+
+- name: Disable StrictHostKeyChecking for root
+  copy:
+    dest: /root/.ssh/config
+    content: |
+      Host *
+        StrictHostKeyChecking no
+        UserKnownHostsFile=/dev/null
+    owner: root
+    group: root
+    mode: '0600'

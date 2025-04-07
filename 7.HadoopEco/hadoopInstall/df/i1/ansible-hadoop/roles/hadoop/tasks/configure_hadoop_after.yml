@@ -1,10 +1,8 @@
-# 네임노드 멈춤
 - name: Stop any running NameNode daemon
   command: /opt/hadoop/bin/hdfs --daemon stop namenode
   ignore_errors: yes
   when: "'namenodes' in group_names"
 
-# 데이터노드 멈춤
 - name: Stop any running DataNode daemon
   command: /opt/hadoop/bin/hdfs --daemon stop datanode
   ignore_errors: yes
@@ -16,16 +14,7 @@
   shell: echo "Y" | /opt/hadoop/bin/hdfs namenode -format
   when: "'namenodes' in group_names"
 
-# 네임노드 시작
-- name: Start NameNode daemon with nohup
-  shell: nohup /opt/hadoop/bin/hdfs --daemon start namenode &
-  register: namenode_start
-  until: namenode_start.rc == 0
-  retries: 5
-  delay: 10
-  when: "'namenodes' in group_names"
-
-# 데이터노드 시작
+# 데이터노드 먼저 시작
 - name: Start DataNode daemon with nohup
   shell: nohup /opt/hadoop/bin/hdfs --daemon start datanode &
   register: datanode_start
@@ -34,24 +23,19 @@
   delay: 10
   when: "'datanodes' in group_names"
 
-# 데이터노드가 준비될 때까지 대기
+# 네임노드 시작은 그 이후
+- name: Start NameNode daemon with nohup
+  shell: nohup /opt/hadoop/bin/hdfs --daemon start namenode &
+  register: namenode_start
+  when: "'namenodes' in group_names"
+
 - name: Wait for DataNode to be ready
   pause:
     seconds: 10
   when: "'datanodes' in group_names"
 
-# HDFS 루트 디렉토리 확인
 - name: Verify Hadoop setup by listing root directory
   command: /opt/hadoop/bin/hadoop fs -ls /
   register: hdfs_check
-  until: hdfs_check.rc == 0
-  retries: 5
-  delay: 10
   when: "'namenodes' in group_names"
 
-# 로그 디렉토리 소유권 및 권한 설정
-
-- name: Set permission of Hadoop logs directory
-  file:
-    path: /opt/hadoop/logs
-    mode: '0777'

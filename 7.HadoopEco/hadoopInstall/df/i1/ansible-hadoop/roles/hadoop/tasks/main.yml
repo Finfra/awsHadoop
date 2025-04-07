@@ -1,5 +1,6 @@
 # - import_tasks: install_java.yml
 - import_tasks: configure_java.yml
+- import_tasks: key_setting.yml
 - import_tasks: configure_hadoop_before.yml
 - import_tasks: download_hadoop.yml
 - import_tasks: configure_hadoop.yml

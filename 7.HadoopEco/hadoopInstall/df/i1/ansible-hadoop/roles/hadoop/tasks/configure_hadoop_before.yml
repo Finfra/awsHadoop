@@ -1,3 +1,12 @@
+# Host파일 셋팅(Docker에 없는 부분)
+- name: Copy unified /etc/hosts
+  copy:
+    src: /etc/hosts  # i1에서의 /etc/hosts 파일
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: '0644'
+
 # roles/hadoop/tasks/configure_hadoop_before.yml
 - name: Check if NameNode is running
   shell: |

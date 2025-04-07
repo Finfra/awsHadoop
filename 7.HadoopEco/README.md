@@ -22,8 +22,7 @@ dnf install -y git
 exit
 ```
 
-## 
-* Ansible, Terraform설치
+## Ansible, Terraform설치
 ```
 # cd
 # git clone  https://github.com/Finfra/awsHadoop
@@ -90,6 +89,7 @@ ssh s3 hostname
 
 ## 7.5. Hadoop Cluster Install
 * 주의 : 하둡파일(https://downloads.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz)이 ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/에 있어야 작동함.
+* aws ec2에서 주의 : s1~s3서버들 private ip사용해야 함.
 ```
 [ ! -f ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/hadoop-3.3.6.tar.gz ] &&      \
 wget https://downloads.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz \
@@ -102,11 +102,10 @@ ansible-playbook --flush-cache                                                  
   -e  ansible_python_interpreter=/usr/bin/python3.9
 ```
 
-## 7.4. Spark Cluster Install
+## 7.4. Spark Cluster Install [ 시간되면 진행 ]
 * 주의1 : 하둡파일(https://dlcdn.apache.org/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3.tgz)이 ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/에 있어야 작동함.
-
+* 주의2 : docker 전용 스크립트임. hadoop스크립트와 llm활용하여 Debug하시오. 
 ```
-# docker exec -it i1  bash
 [ ! -f ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/spark-3.4.4-bin-hadoop3.tgz ] && \
 wget https://dlcdn.apache.org/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3.tgz      \
 -O ~/awsHadoop/7.HadoopEco/hadoopInstall/df/i1/spark-3.4.4-bin-hadoop3.tgz
