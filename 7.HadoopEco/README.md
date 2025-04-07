@@ -18,6 +18,7 @@ ssh -i key1.pem ec2-user@{아이피}
 sudo -i
 hostname i1 
 echo i1 > /etc/hostname
+dnf install -y git 
 exit
 ```
 
@@ -35,8 +36,8 @@ bash installOnEc2_awsLinux.sh
 * 아래와 같은 내용을 ~/.bashrc에 추가하고 실행해 줍니다.
 ```
 echo '
-export TF_VAR_AWS_ACCESS_KEY="xxxxxxx"
-export TF_VAR_AWS_SECRET_KEY="xxxxxxxxxxxxxxx"
+export TF_VAR_AWS_ACCESS_KEY="xxxxxxxxxx"
+export TF_VAR_AWS_SECRET_KEY="xxxxxxxxxxxxxxxxxxx"
 export TF_VAR_AWS_REGION="ap-northeast-2"
 '>> ~/.bashrc
 . ~/.bashrc
