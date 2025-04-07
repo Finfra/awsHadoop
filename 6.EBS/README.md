@@ -31,7 +31,7 @@ exit
   - 시연 위주임(꼭 따라하지 못해도 과정만 이해하면 다음 과정을 진행하는데는 문제 없음)
 * 다음번 예제에서 자동으로 fdisk·format,·mount 하는 것을 다룸
 
-# 실행 절차
+### 실행 절차
 1. 폴더로 이동
 ```
 cd awsHadoop/6.EBS
@@ -85,13 +85,12 @@ aws ec2 delete-key-pair --key-name mykey2
 
 ## 6.4: Terraform으로 EBS 볼륨 연결 및 포맷
 * Cloudinit을 통해 fdisk·format·mount등을 실행하는 예제
-* Destroy 실패함. Instance 제거 후 destroy[수동 생성 부분 때문에 제거 않됨]
 * Manual : https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/cloudinit_config
 
 ### 실행 절차
 1. 폴더로 이동
 ```
-cd awsHadoop/6.EBS/cloudinit
+cd ~/awsHadoop/6.EBS/cloudinit
 ```
 
 2. init 및 apply
@@ -114,4 +113,7 @@ ssh -i ~/mykey ubuntu@$ip
 4. destroy
 ```
 terraform destroy -auto-approve
+# Destroy 실패하면 Instance 및 Volume 수동으로 제거 후 다시 destroy[수동 생성 부분 때문에 제거 않되는 경우]
+  terraform destroy -auto-approve
+
 ```

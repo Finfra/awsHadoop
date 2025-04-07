@@ -69,6 +69,7 @@ bash doSetHosts.sh
 ```
 
 ### 5.2.5.3: Terraform 상태 파일 관리 및 백업
+* 
 ```
 terraform show 
 ls 명령으로 terraform.tfstate 생성 확인 
