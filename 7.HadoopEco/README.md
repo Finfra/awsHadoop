@@ -11,7 +11,7 @@
 
 * 접속 : linux에서는 아래와 같고 windows에서는 putty로 접속 단, user는 ec2-user임.(ubuntu아님에 주의)
 ```
-ssh ssh -i key1.pem ec2-user@{아이피}
+ssh -i key1.pem ec2-user@{아이피}
 ```
 * 접속 후 기본 셋팅
 ```
