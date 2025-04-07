@@ -20,7 +20,7 @@ echo "/dev/xvdbb1 /data1 ext4 defaults 0 1" >> /etc/fstab
 reboot
   # Exit 됨
 
-ssh -i ~/mykey ubuntu@<다시 설정된 Public ip>
+ssh -i ~/mykey ubuntu@<eip 혹은 다시 설정된 Public ip>
 df -h
 exit
 ```
@@ -34,7 +34,7 @@ exit
 # 실행 절차
 1. 폴더로 이동
 ```
-cd aws/1.5.3.Ec2EBS
+cd awsHadoop/6.EBS
 ```
 
 2. init 및 apply
@@ -84,5 +84,34 @@ aws ec2 delete-key-pair --key-name mykey2
 ```
 
 ## 6.4: Terraform으로 EBS 볼륨 연결 및 포맷
-* README.md 참고 : https://github.com/Finfra/aws/blob/main/1.5.4.UserdataAndCloudinit/README.md
-  - 단, i1 서버에  "https://github.com/Finfra/aws"를 클론하고 시작합니다.
+* Cloudinit을 통해 fdisk·format·mount등을 실행하는 예제
+* Destroy 실패함. Instance 제거 후 destroy[수동 생성 부분 때문에 제거 않됨]
+* Manual : https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/cloudinit_config
+
+### 실행 절차
+1. 폴더로 이동
+```
+cd awsHadoop/6.EBS/cloudinit
+```
+
+2. init 및 apply
+```
+terraform init
+terraform apply -auto-approve
+```
+
+
+3. Instance 생성 확인
+```
+ip=$(cat terraform.tfstate |grep public_ip\"|awk 'BEGIN{FS="\""}{printf $4}')
+ssh -i ~/mykey ubuntu@$ip
+  df -h|grep data
+  cat /etc/fstab
+  cat /var/log/cloud-init-output.log
+  exit
+```
+
+4. destroy
+```
+terraform destroy -auto-approve
+```
