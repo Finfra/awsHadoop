@@ -69,11 +69,10 @@ aws configure
     AWS Secret Access Key [None]: xxxxxxxxxxxxxxxxxxx
     Default region name [None]: ap-northeast-2
     Default output format [None]: text
-# rm -rf ~/.ssh/known_hosts
+# rm -rf ~/.ssh/known_hosts      # 실패하고, 두번째 설치시
 # aws ec2 describe-instances
-sudo ./noStrictCheck.sh
-
-sudo ./doSetHosts.sh
+bash ./noStrictCheck.sh
+bash ./doSetHosts.sh
 
 ssh s1 hostname
 ssh s2 hostname
