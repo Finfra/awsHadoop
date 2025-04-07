@@ -23,7 +23,14 @@ exit
 
 
 ## 7.2. Terraform을 통한 인스턴스 프로비저닝
-* Terraform으로 i1에서 s1,s2 s3 인스턴트 생성 : os는 Red Hat Enterprise Linux version 9 
+* Terraform으로 i1에서 s1,s2 s3 인스턴트 생성 : os는  Amazon Linux 2023 
+* Ansible, Terraform설치
+```
+cd
+git clone  https://github.com/Finfra/awsHadoop
+cd ~/awsHadoop/7.HadoopEco 
+bash installOnEc2_awsLinux.sh
+```
 
 ## 7.3. Hadoop Cluster Install
 * https://github.com/Finfra/hadoopInstall 
