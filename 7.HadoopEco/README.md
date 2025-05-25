@@ -16,8 +16,8 @@ ssh -i key1.pem ec2-user@{아이피}
 * 접속 후 기본 셋팅
 ```
 sudo -i
-hostname i1 
-echo i1 > /etc/hostname
+hostname i자기번호
+echo $(hostname) > /etc/hostname
 dnf install -y git 
 exit
 ```
@@ -56,7 +56,9 @@ ssh-keygen -f ~/.ssh/id_rsa -N ''
 # → /home/ec2-user/awsHadoop/7.HadoopEco
 
 terraform init
-terraform apply --auto-approve
+terraform apply -var "user_num=$(hostname | sed 's/^i//')" -auto-approve
+
+
 ```
 
 

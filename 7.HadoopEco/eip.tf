@@ -2,7 +2,7 @@ resource "aws_eip" "vm_eip" {
   count         = var.instance_count
   domain = "vpc"
   tags = {
-    Name = format("vm_eip_0%d", count.index + 1)
+    Name = format("vm_eip_%d_%d", count.index + 1, var.user_num)
   }
 }
 resource "aws_eip_association" "eip_assoc" {

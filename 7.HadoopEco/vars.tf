@@ -21,6 +21,11 @@ variable "AMIS" {
 } 
 
 
+variable "user_num" {
+  description = "User number for resource naming"
+  type        = number
+}
+
 variable "instance_count" {
   default = "3"
 }

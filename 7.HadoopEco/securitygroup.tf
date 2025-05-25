@@ -1,6 +1,6 @@
-resource "aws_security_group" "allow-ssh" {
+resource "aws_security_group" "allow_ssh" {
   # vpc_id      = aws_vpc.main.id
-  name        = "allow-ssh"
+  name        = "allow-ssh_${var.user_num}"
   description = "security group that allows ssh and all egress traffic"
   egress {
     from_port   = 0
@@ -22,6 +22,7 @@ resource "aws_security_group" "allow-ssh" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-    Name = "allow-ssh"
+    Name        = "allow-ssh_${var.user_num}"
+    user_number = var.user_num
   }
 }
